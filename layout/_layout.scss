@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  width: 100vw;
+  height: 40px;
+  background: #999;
+
+  & h1 {
+    text-align: center;
+  }
+}
+
+.main {
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  min-height: calc(100vh - 40px - 20px);
+  user-select: none;
+}
+
+footer {
+  width: 100vw;
+  height: 20px;
+  color: #fff;
+  text-align: center;
+  background: #666666;
+}

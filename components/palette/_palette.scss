@@ -1,0 +1,70 @@
+.palette {
+
+  &__block-name {
+    width: 100%;
+    margin: 5px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  & .colors {
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.8);
+    margin-bottom: 5px;
+
+    &__item {
+      width: 25px;
+      height: 25px;
+      margin: 10px;
+      border-radius: 50%;
+
+      &:hover {
+        box-shadow: 0 0px 10px red;
+      }
+    }
+  }
+
+  & .current-color {
+    justify-content: center;
+
+    & .colors__item {
+      width: 40px;
+      height: 40px;
+      background: rgba(0, 128, 0, 255);
+      border: 1px solid black;
+    }
+  }
+
+  & .standard-colors .colors__item {
+
+    &:nth-child(2) {
+      background: rgba(0, 0, 0, 1);
+    }
+
+    &:nth-child(3) {
+      background: rgba(128, 128, 128, 1);
+    }
+
+    &:nth-child(4) {
+      background: rgba(0, 0, 255, 1);
+    }
+
+    &:nth-child(5) {
+      background: rgba(0, 128, 0, 1);
+    }
+
+    &:nth-child(6) {
+      background: rgba(255, 0, 0, 1);
+    }
+
+    &:nth-child(7) {
+      background: rgba(255, 255, 0, 1);
+    }
+  }
+
+  & .previos-colors .colors__item {
+    width: 20px;
+    height: 20px;
+  }
+}
