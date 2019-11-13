@@ -7,6 +7,11 @@ function setCurrentColor(color) {
 function useLocalStorage() {
     if (localStorage.getItem('color')) {
         setCurrentColor(localStorage.getItem('color'));
+    } else {
+        const current = document.querySelector('.current-color span');
+        const color = getColor(current);
+        setCurrentColor(color);
+        setStorageColor(color);
     }
 
     if (localStorage.getItem('previousColor')) {
@@ -50,14 +55,14 @@ function hasColor(color) {
     const previousColors = getPreviousColors();
     color = color.slice(0, -6);
     color += ')';
-    console.log(color)
     return (previousColors) ? previousColors.some(el => el.style.background === color) : false;
 
 }
 
+// возможно переписать еще rgb в rgba
 function getColor(target) {
-    const temp = getComputedStyle(target).backgroundColor.replace(')', ', 255)');
-    return temp;
+    const color = getComputedStyle(target).backgroundColor.replace(')', ', 255)');
+    return color;
 }
 
 function checkSpan(target) {
