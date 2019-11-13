@@ -28,6 +28,9 @@ function getStorageTool() {
     let checkTool = localStorage.getItem('tool');
     if (checkTool) {
         document.getElementById(checkTool).classList.add('active');
+    } else {
+        setTool('pencil');
+        document.getElementById('pencil').classList.add('active');
     }
 }
 
