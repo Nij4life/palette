@@ -1,3 +1,8 @@
+import { PENCIL, BUCKET, PICKER } from './variables.js';
+import getInstanceLocalStorage from './localStorage.js';
+
+const LocalStorageInstance = getInstanceLocalStorage();
+
 class CanvasClass {
     constructor(canvas, scale = 16) {
         this.canvas = canvas;
@@ -6,8 +11,8 @@ class CanvasClass {
         this.height = canvas.height;
         this.context = this.canvas.getContext('2d');
 
-        this.tool = this.getStorageTool();
-        this.color = this.getStorageColor();
+        this.tool = PENCIL;
+        this.color = new ImageData(new Uint8ClampedArray([0, 128, 0, 255]), 1, 1);
 
         this.startPosition = null;
         this.isMouseDown = false;
@@ -17,22 +22,23 @@ class CanvasClass {
         this.isMouseDown = !this.isMouseDown;
     }
 
-    getStorageTool() {
-        const tool = localStorage.getItem('tool');
-        return (tool) ? tool : 'pencil';
-    }
+    getStorage() {
+        const url = LocalStorageInstance.getDataByType('canvas');
 
-    getStorageColor() {
-        const color = localStorage.getItem('color');
-        if (color) {
-            return this.imageRgbaToData(color);
+        if (url) {
+            const img = new Image();
+
+            img.src = url;
+            img.onload = () => this.context.drawImage(img, 0, 0);
+
         } else {
-            return new ImageData(new Uint8ClampedArray([0, 128, 0, 255]), 1, 1);
+            this.context.fillStyle = 'white';
+            this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         }
     }
 
-    setTool() {
-        return this.tool = localStorage.getItem('tool');
+    setStorage() {
+        LocalStorageInstance.setData('canvas', this.canvas.toDataURL());
     }
 
     setColor(color) {
@@ -86,7 +92,6 @@ class CanvasClass {
             const e2 = 2 * err;
             const position = { x: xs, y: ys };
 
-            this.setColor(localStorage.getItem('color'));
             this.setPixelColor(position, this.color);
 
             if (e2 > -dy) {
@@ -99,13 +104,13 @@ class CanvasClass {
         }
     }
 
-    draw(e) {
+    draw(e, currentColor) {
         const newPosition = this.getPixelPosition(e);
 
         if (!this.startPosition) this.startPosition = newPosition;
 
         if (this.startPosition.x === newPosition.x && this.startPosition.y === newPosition.y) {
-            this.setColor(localStorage.getItem('color'));
+            this.setColor(currentColor);
             this.setPixelColor(this.startPosition, this.color);
         } else {
             this.bresenhamDraw(this.startPosition, newPosition);
@@ -120,7 +125,7 @@ class CanvasClass {
 
         if (this.isEqualColor(tempColor, startColor)
             && !this.isEqualColor(tempColor, replaceColor)) {
-            this.setColor(localStorage.getItem('color'));
+
             this.setPixelColor({ x, y }, replaceColor);
             this.floodFill(x + 1, y, startColor, replaceColor);
             this.floodFill(x, y + 1, startColor, replaceColor);
@@ -129,21 +134,27 @@ class CanvasClass {
         }
     }
 
-    bucket(e) {
+    bucket(e, currentColor) {
         const position = this.getPixelPosition(e);
         const color = this.getPixelColor(position);
-        this.setColor(localStorage.getItem('color'));
+        this.setColor(currentColor);
         this.floodFill(position.x, position.y, color, this.color);
     }
 
-    pickColor(e) {
+    pickColor(e, Palette) {
+        if (e.type === 'mousemove') return;
+
         const position = this.getPixelPosition(e);
         this.color = this.getPixelColor(position);
-        localStorage.setItem('color', this.imageDataToRgba(this.color));
 
         const currentColor = this.imageDataToRgba(this.color);
-        const current = document.querySelector('.current-color span');
-        current.style.background = currentColor;
+        Palette.setCurrentColorDivBackground(currentColor);
+        if (Palette.hasColor()) {
+            return;
+        } else {
+            Palette.createPreviousColor();
+            Palette.limitPreviousColor();
+        }
     }
 
     setDefault() {
@@ -151,12 +162,16 @@ class CanvasClass {
         this.startPosition = null;
     }
 
-    actionSwitch(e) {
+    getColorFromDiv(currentColor) {
+        return getComputedStyle(currentColor).backgroundColor.replace(')', ', 255)');
+    }
+
+    actionSwitch(e, activeTool, currentColor, Palette) {
         if (this.isMouseDown) {
-            switch (this.setTool()) {
-                case 'pencil': this.draw(e); break;
-                case 'bucket': this.bucket(e); break;
-                case 'picker': this.pickColor(e); break;
+            switch (activeTool) {
+                case PENCIL: this.draw(e, this.getColorFromDiv(currentColor)); break;
+                case BUCKET: this.bucket(e, this.getColorFromDiv(currentColor)); break;
+                case PICKER: this.pickColor(e, Palette); break;
                 default: break;
             }
         }

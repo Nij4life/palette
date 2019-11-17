@@ -28,25 +28,25 @@ footer {
   background: #666666;
 }
 
-.action {
+.left-sidebar {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   width: 20vw;
-  min-width: 270px;
+  min-width: 250px;
   height: 100%;
   min-height: calc(100vh - 40px - 20px);
   background: #ddd;
   z-index: 1;
 }
-.action .menu {
+.left-sidebar .menu-actions {
   display: flex;
   flex-wrap: wrap;
   margin: 5vmin 1vmin;
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
   padding: 10px 0;
 }
-.action .menu__item {
+.left-sidebar .menu-actions .canvas-action {
   position: relative;
   display: flex;
   width: 100%;
@@ -54,74 +54,83 @@ footer {
   font-size: 24px;
   border-radius: 5px;
 }
-.action .menu__item:hover {
+.left-sidebar .menu-actions .canvas-action:hover {
   box-shadow: 0 1px 3px #666;
   background: #ccc;
 }
-.action .menu__item i {
+.left-sidebar .menu-actions .canvas-action i {
   margin: 0 30px 0 10px;
 }
-.action .menu__item input[type=color] {
+.left-sidebar .menu-actions .canvas-action input[type=color] {
   position: absolute;
   width: 100%;
   height: 100%;
   opacity: 0;
 }
-.action .menu .active {
+.left-sidebar .menu-actions .active {
   box-shadow: 0 0px 10px rgba(0, 0, 0, 0.8);
   background: #777;
   color: #eee;
 }
 
-.palette__block-name {
+.palette-header {
   width: 100%;
   margin: 5px;
   font-weight: 700;
   text-align: center;
 }
 .palette .colors {
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.8);
+}
+.palette .colors .current-colors,
+.palette .colors .standard-colors,
+.palette .colors .previous-colors {
   display: flex;
   flex-wrap: wrap;
-  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.8);
   margin-bottom: 5px;
 }
-.palette .colors__item {
+.palette .colors .colors-item {
   width: 25px;
   height: 25px;
   margin: 10px;
   border-radius: 50%;
 }
-.palette .colors__item:hover {
+.palette .colors .colors-item:hover {
   box-shadow: 0 0px 10px red;
 }
 .palette .current-color {
-  justify-content: center;
+  display: block;
+  padding: 5px 0;
 }
-.palette .current-color .colors__item {
+.palette .current-color .colors-item {
   width: 40px;
   height: 40px;
+  margin: auto;
   background: green;
   border: 1px solid black;
 }
-.palette .standard-colors .colors__item:nth-child(2) {
+.palette .standard-colors .colors-item:nth-child(1) {
   background: black;
 }
-.palette .standard-colors .colors__item:nth-child(3) {
+.palette .standard-colors .colors-item:nth-child(2) {
   background: gray;
 }
-.palette .standard-colors .colors__item:nth-child(4) {
+.palette .standard-colors .colors-item:nth-child(3) {
   background: blue;
 }
-.palette .standard-colors .colors__item:nth-child(5) {
+.palette .standard-colors .colors-item:nth-child(4) {
   background: green;
 }
-.palette .standard-colors .colors__item:nth-child(6) {
+.palette .standard-colors .colors-item:nth-child(5) {
   background: red;
 }
-.palette .standard-colors .colors__item:nth-child(7) {
+.palette .standard-colors .colors-item:nth-child(6) {
   background: yellow;
 }
-.palette .previos-colors .colors__item {
+.palette .standard-colors .colors-item:nth-child(7) {
+  background: white;
+}
+.palette .previos-colors .colors-item {
   width: 20px;
   height: 20px;
 }
