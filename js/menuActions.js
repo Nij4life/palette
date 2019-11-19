@@ -13,6 +13,9 @@ class MenuActions {
     createInputElement() {
         this.inputElement = document.createElement('input');
         this.inputElement.type = COLOR;
+        this.inputElement.addEventListener('input', e => {
+            document.querySelector('.current-color .colors-item').style.background = e.target.value;
+          });
         Array.from(this.menuItems).filter(el => el.id === CHOOSE)[0].append(this.inputElement);
     }
 
